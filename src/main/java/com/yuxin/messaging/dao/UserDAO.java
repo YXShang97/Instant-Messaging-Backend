@@ -5,6 +5,7 @@ import java.util.List;
 import com.yuxin.messaging.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ public interface UserDAO {
 
     @Insert("INSERT INTO user (username, nickname, password, register_time, gender, email, address, is_valid) " +
             "VALUES (#{username}, #{nickname}, #{password}, #{registerTime}, #{gender}, #{email}, #{address}, #{valid})")
+    @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     void insert(User user);
 
     @Select("SELECT * FROM user WHERE email = #{email}")
