@@ -78,10 +78,10 @@ public class UserService {
         this.userValidationCodeDAO.insert(userValidationCode);
 
         // send validation code to user via email
-//        SimpleMailMessage msg = new SimpleMailMessage();
-//        msg.setTo(user.getEmail());
-//        msg.setSubject("Registration Validation");
-//        msg.setText(String.format("Validation code is: %s", validationCode));
-//        javaMailSender.send(msg);
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(user.getEmail());
+        msg.setSubject("Registration Validation");
+        msg.setText(String.format("Validation code is: %s", validationCode));
+        javaMailSender.send(msg);
     }
 }
