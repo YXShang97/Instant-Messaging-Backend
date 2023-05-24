@@ -12,8 +12,6 @@ import com.yuxin.messaging.model.User;
 import com.yuxin.messaging.model.UserValidationCode;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,9 +21,8 @@ public class UserService {
     private UserDAO userDAO;
     @Autowired
     private UserValidationCodeDAO userValidationCodeDAO;
-
     @Autowired
-    private JavaMailSender javaMailSender;
+    private EmailService emailService;
 
     public void register(String username,
                          String nickname,
@@ -78,10 +75,6 @@ public class UserService {
         this.userValidationCodeDAO.insert(userValidationCode);
 
         // send validation code to user via email
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(user.getEmail());
-        msg.setSubject("Registration Validation");
-        msg.setText(String.format("Validation code is: %s", validationCode));
-        javaMailSender.send(msg);
+        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
     }
 }
