@@ -6,6 +6,8 @@ import java.util.List;
 import com.yuxin.messaging.dao.UserDAO;
 import com.yuxin.messaging.dao.UserValidationCodeDAO;
 import com.yuxin.messaging.enums.Gender;
+import com.yuxin.messaging.enums.Status;
+import com.yuxin.messaging.exception.MessagingServiceException;
 import com.yuxin.messaging.model.User;
 import com.yuxin.messaging.model.UserValidationCode;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -31,28 +33,28 @@ public class UserService {
                          String password,
                          String repeatPassword,
                          String address,
-                         Gender gender) throws Exception {
+                         Gender gender) throws MessagingServiceException {
         // validation
         // passwords are matched
         if (!password.equals(repeatPassword)) {
-            throw new Exception();
+            throw new MessagingServiceException(Status.PASSWORD_NOT_MATCH);
         }
         if (username == null || username.isEmpty()) {
-            throw new Exception();
+            throw new MessagingServiceException(Status.EMPTY_USERNAME);
         }
 
         // check whether email already exists
         List<User> selectedUsers = this.userDAO.selectByEmail(email);
         if (selectedUsers != null && !selectedUsers.isEmpty()) {
             System.out.println(selectedUsers);
-            throw new IllegalArgumentException();
+            throw new MessagingServiceException(Status.EMAIL_EXISTS_ALREADY);
         }
 
         // check whether username already exists
         List<User> selectedUsersByName = this.userDAO.selectByUserName(username);
         if (selectedUsersByName != null && !selectedUsersByName.isEmpty()) {
             System.out.println(selectedUsersByName);
-            throw new IllegalArgumentException();
+            throw new MessagingServiceException(Status.USERNAME_EXISTS_ALREADY);
         }
 
         User user = new User();
@@ -76,10 +78,10 @@ public class UserService {
         this.userValidationCodeDAO.insert(userValidationCode);
 
         // send validation code to user via email
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(user.getEmail());
-        msg.setSubject("Registration Validation");
-        msg.setText(String.format("Validation code is: %s", validationCode));
-        javaMailSender.send(msg);
+//        SimpleMailMessage msg = new SimpleMailMessage();
+//        msg.setTo(user.getEmail());
+//        msg.setSubject("Registration Validation");
+//        msg.setText(String.format("Validation code is: %s", validationCode));
+//        javaMailSender.send(msg);
     }
 }
