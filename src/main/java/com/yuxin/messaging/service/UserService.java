@@ -1,5 +1,8 @@
 package com.yuxin.messaging.service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
@@ -58,11 +61,14 @@ public class UserService {
         user.setUsername(username);
         user.setNickname(nickname);
         user.setEmail(email);
-        user.setPassword(password);
         user.setAddress(address);
         user.setGender(gender);
         user.setValid(false);
         user.setRegisterTime(new Date());
+
+        // secure password with MD5 hashing and salting
+        String salt = "Random$SaltValue#WithSpecialCharacters12@$@4&#%^$*";
+        user.setPassword(md5(password + salt));
 
         // insert into user table
         this.userDAO.insert(user);
@@ -99,5 +105,24 @@ public class UserService {
         //               2. delete userValidationCode
         this.userValidationCodeDAO.deleteByUserId(selectedUser.getId());
 
+    }
+
+    private static String md5(String input) {
+
+        String md5 = null;
+
+        if(input == null) return null;
+
+        try {
+            //Create MessageDigest object for MD5
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            //Update input string in message digest
+            digest.update(input.getBytes(), 0, input.length());
+            //Converts message digest value in base 16 (hex)
+            md5 = new BigInteger(1, digest.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return md5;
     }
 }
