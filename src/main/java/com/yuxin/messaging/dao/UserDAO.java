@@ -3,10 +3,7 @@ package com.yuxin.messaging.dao;
 import java.util.List;
 
 import com.yuxin.messaging.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 // data access object
@@ -25,6 +22,9 @@ public interface UserDAO {
 
     @Select("SELECT * FROM user WHERE username = #{username}")
     List<User> selectByUserName(String username);
+
+    @Update("UPDATE user SET is_valid = 1 WHERE id = #{userId}")
+    void updateValid(int userId);
 }
 //
 //public class UserDAOImpl implements UserDAO {

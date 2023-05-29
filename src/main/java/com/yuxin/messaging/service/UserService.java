@@ -77,4 +77,27 @@ public class UserService {
         // send validation code to user via email
         emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
     }
+
+    public void activate(String identification, String validationCode) throws MessagingServiceException {
+        List<User> selectedUsers = this.userDAO.selectByEmail(identification);
+        if (selectedUsers.isEmpty()) {
+            selectedUsers = this.userDAO.selectByUserName(identification);
+            if (selectedUsers.isEmpty()) {
+                throw new MessagingServiceException(Status.USER_NOT_EXISTS);
+            }
+        }
+
+        var selectedUser = selectedUsers.get(0);
+        // select userValidationCode by selectedUser.id
+        String code = this.userValidationCodeDAO.selectByUserId(selectedUser.getId());
+        // compare -> N: throw exception
+        if (!code.equals(validationCode)) {
+            throw new MessagingServiceException(Status.VALIDATION_CODE_NOT_MATCH);
+        }
+        //         -> Y: 1. update selectedUser (set valid = 1)
+        this.userDAO.updateValid(selectedUser.getId());
+        //               2. delete userValidationCode
+        this.userValidationCodeDAO.deleteByUserId(selectedUser.getId());
+
+    }
 }

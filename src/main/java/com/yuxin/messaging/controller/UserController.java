@@ -3,6 +3,7 @@ package com.yuxin.messaging.controller;
 
 import com.yuxin.messaging.enums.Status;
 import com.yuxin.messaging.exception.MessagingServiceException;
+import com.yuxin.messaging.request.ActivateUserRequest;
 import com.yuxin.messaging.request.RegisterUserRequest;
 import com.yuxin.messaging.response.CommonResponse;
 import com.yuxin.messaging.service.UserService;
@@ -29,6 +30,12 @@ public class UserController {
                 registerUserRequest.getAddress(),
                 registerUserRequest.getGender());
 
+        return new CommonResponse(Status.OK);
+    }
+
+    @PostMapping("/activate")
+    public CommonResponse activate(@RequestBody ActivateUserRequest activateUserRequest) throws MessagingServiceException {
+        this.userService.activate(activateUserRequest.getIdentification(), activateUserRequest.getValidationCode());
         return new CommonResponse(Status.OK);
     }
 

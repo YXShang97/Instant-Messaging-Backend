@@ -8,6 +8,8 @@ public enum Status {
     EMPTY_USERNAME(1002, "Username is empty.", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTS_ALREADY(1003, "Email already exists.", HttpStatus.BAD_REQUEST),
     USERNAME_EXISTS_ALREADY(1004, "Username already exists.", HttpStatus.BAD_REQUEST),
+    USER_NOT_EXISTS(1005, "User doesn't exist.", HttpStatus.BAD_REQUEST),
+    VALIDATION_CODE_NOT_MATCH(1006, "Validation code not match.", HttpStatus.BAD_REQUEST),
     UNKNOWN_EXCEPTION(9999, "Unknown exception.", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private int code;
