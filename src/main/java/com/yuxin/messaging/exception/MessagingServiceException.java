@@ -9,6 +9,9 @@ public class MessagingServiceException extends Exception {
         this.status = status;
     }
 
+    // CI
+
+
     public Status getStatus() {
         return status;
     }
