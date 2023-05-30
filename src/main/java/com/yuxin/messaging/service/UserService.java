@@ -1,5 +1,8 @@
 package com.yuxin.messaging.service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
@@ -58,11 +61,14 @@ public class UserService {
         user.setUsername(username);
         user.setNickname(nickname);
         user.setEmail(email);
-        user.setPassword(password);
         user.setAddress(address);
         user.setGender(gender);
         user.setValid(false);
         user.setRegisterTime(new Date());
+
+        // secure password with MD5 hashing and salting
+        String salt = "Random$SaltValue#WithSpecialCharacters12@$@4&#%^$*";
+        user.setPassword(md5(password + salt));
 
         // insert into user table
         this.userDAO.insert(user);
@@ -76,5 +82,47 @@ public class UserService {
 
         // send validation code to user via email
         emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
+    }
+
+    public void activate(String identification, String validationCode) throws MessagingServiceException {
+        List<User> selectedUsers = this.userDAO.selectByEmail(identification);
+        if (selectedUsers.isEmpty()) {
+            selectedUsers = this.userDAO.selectByUserName(identification);
+            if (selectedUsers.isEmpty()) {
+                throw new MessagingServiceException(Status.USER_NOT_EXISTS);
+            }
+        }
+
+        var selectedUser = selectedUsers.get(0);
+        // select userValidationCode by selectedUser.id
+        String code = this.userValidationCodeDAO.selectByUserId(selectedUser.getId());
+        // compare -> N: throw exception
+        if (!code.equals(validationCode)) {
+            throw new MessagingServiceException(Status.VALIDATION_CODE_NOT_MATCH);
+        }
+        //         -> Y: 1. update selectedUser (set valid = 1)
+        this.userDAO.updateValid(selectedUser.getId());
+        //               2. delete userValidationCode
+        this.userValidationCodeDAO.deleteByUserId(selectedUser.getId());
+
+    }
+
+    private static String md5(String input) throws MessagingServiceException {
+
+        String md5 = null;
+
+        if(input == null) return null;
+
+        try {
+            //Create MessageDigest object for MD5
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            //Update input string in message digest
+            digest.update(input.getBytes(), 0, input.length());
+            //Converts message digest value in base 16 (hex)
+            md5 = new BigInteger(1, digest.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            throw new MessagingServiceException(Status.UNKNOWN_EXCEPTION);
+        }
+        return md5;
     }
 }
