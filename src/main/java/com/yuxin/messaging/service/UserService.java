@@ -107,7 +107,7 @@ public class UserService {
 
     }
 
-    private static String md5(String input) {
+    private static String md5(String input) throws MessagingServiceException {
 
         String md5 = null;
 
@@ -121,7 +121,7 @@ public class UserService {
             //Converts message digest value in base 16 (hex)
             md5 = new BigInteger(1, digest.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new MessagingServiceException(Status.UNKNOWN_EXCEPTION);
         }
         return md5;
     }
