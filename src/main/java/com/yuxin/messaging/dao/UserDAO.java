@@ -25,6 +25,9 @@ public interface UserDAO {
 
     @Update("UPDATE user SET is_valid = 1 WHERE id = #{userId}")
     void updateValid(int userId);
+
+    @Delete("DELETE FROM user")
+    void deleteAll();
 }
 //
 //public class UserDAOImpl implements UserDAO {

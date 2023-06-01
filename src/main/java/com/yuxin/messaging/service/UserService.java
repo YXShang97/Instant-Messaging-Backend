@@ -13,6 +13,7 @@ import com.yuxin.messaging.enums.Status;
 import com.yuxin.messaging.exception.MessagingServiceException;
 import com.yuxin.messaging.model.User;
 import com.yuxin.messaging.model.UserValidationCode;
+import lombok.var;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class UserService {
         this.userValidationCodeDAO.insert(userValidationCode);
 
         // send validation code to user via email
-        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
+//        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
     }
 
     public void activate(String identification, String validationCode) throws MessagingServiceException {
@@ -107,7 +108,7 @@ public class UserService {
 
     }
 
-    private static String md5(String input) throws MessagingServiceException {
+    public static String md5(String input) throws MessagingServiceException {
 
         String md5 = null;
 
