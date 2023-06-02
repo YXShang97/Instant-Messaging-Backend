@@ -3,7 +3,6 @@ package com.yuxin.messaging.integration;
 import com.yuxin.messaging.dao.UserDAO;
 import com.yuxin.messaging.dao.UserValidationCodeDAO;
 import com.yuxin.messaging.model.User;
-import lombok.var;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

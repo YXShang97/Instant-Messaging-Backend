@@ -13,7 +13,6 @@ import com.yuxin.messaging.enums.Status;
 import com.yuxin.messaging.exception.MessagingServiceException;
 import com.yuxin.messaging.model.User;
 import com.yuxin.messaging.model.UserValidationCode;
-import lombok.var;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
