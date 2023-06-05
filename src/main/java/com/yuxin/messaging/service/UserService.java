@@ -71,17 +71,26 @@ public class UserService {
         user.setPassword(md5(password + salt));
 
         // insert into user table
-        this.userDAO.insert(user);
+        try {
+            this.userDAO.insert(user);
+        } catch (Exception e) {
+            throw new MessagingServiceException(Status.UNKNOWN_EXCEPTION);
+        }
 
         // generate validation code
         var validationCode = RandomStringUtils.randomNumeric(6);
         UserValidationCode userValidationCode = new UserValidationCode();
         userValidationCode.setUserId(user.getId());
         userValidationCode.setValidationCode(validationCode);
-        this.userValidationCodeDAO.insert(userValidationCode);
+        try {
+            this.userValidationCodeDAO.insert(userValidationCode);
+        } catch (Exception e) {
+            throw new MessagingServiceException(Status.UNKNOWN_EXCEPTION);
+        }
+
 
         // send validation code to user via email
-//        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
+        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
     }
 
     public void activate(String identification, String validationCode) throws MessagingServiceException {
@@ -104,7 +113,6 @@ public class UserService {
         this.userDAO.updateValid(selectedUser.getId());
         //               2. delete userValidationCode
         this.userValidationCodeDAO.deleteByUserId(selectedUser.getId());
-
     }
 
     public static String md5(String input) throws MessagingServiceException {
