@@ -17,7 +17,7 @@ jobs:
         with:
           mysql-version: '5.7'
       - name:  Prepare MySQL database
-        run: mysql -umessaging -h127.0.0.1 < sql/init.sql
+        run: mysql -uroot -h127.0.0.1 < sql/init.sql
 
       - name: Run tests with Maven
         run: mvn -B test
