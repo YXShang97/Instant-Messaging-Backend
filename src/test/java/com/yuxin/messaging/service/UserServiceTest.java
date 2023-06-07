@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
@@ -37,32 +38,38 @@ public class UserServiceTest {
     @Captor
     ArgumentCaptor<User> userArgumentCaptor;
 
+    @Captor
+    ArgumentCaptor<UserValidationCode> userValidationCodeArgumentCaptor;
+
     @Test
     public void testRegister_happyCase() throws Exception {
         when(this.userDAO.selectByUserName("username")).thenReturn(List.of());
         when(this.userDAO.selectByEmail("email@gmail.com")).thenReturn(List.of());
-        doNothing().when(this.userDAO).insert(any(User.class));
+        doAnswer(invocationOnMock -> {
+            User user = invocationOnMock.getArgument(0);
+            user.setId(1);
+            return null;
+        }).when(this.userDAO).insert(any(User.class));
         doNothing().when(this.userValidationCodeDAO).insert(any(UserValidationCode.class));
-        // TODO: emailService test (validationCode ?)
-//        doNothing().when(this.emailService).sendEmail("email@gmail.com", "Registration Validation", any(String.class));
-        // TODO: verify user
-//        User user = User.builder()
-//                .username("username")
-//                .nickname("nickname")
-//                .email("email@gmail.com")
-//                .password("xxx")
-//                .address("")
-//                .gender(Gender.FEMALE)
-//                .build();
+        doNothing().when(this.emailService).sendEmail(eq("email@gmail.com"), eq("Registration Validation"), any(String.class));
 
         this.userService.register("username", "nickname", "email@gmail.com",
                 "xxx", "xxx", "", Gender.FEMALE);
 
         verify(this.userDAO).selectByUserName("username");
         verify(this.userDAO).selectByEmail("email@gmail.com");
+
         verify(this.userDAO).insert(userArgumentCaptor.capture());
-        verify(this.userValidationCodeDAO).insert(any(UserValidationCode.class));
-//        verify(this.emailService).sendEmail("email@gmail.com", "Registration Validation", any(String.class));
+        var capturedUser = userArgumentCaptor.getValue();
+        assertEquals("username", capturedUser.getUsername());
+        assertFalse(capturedUser.isValid());
+
+        verify(this.userValidationCodeDAO).insert(userValidationCodeArgumentCaptor.capture());
+        var capturedUserValidationCode = userValidationCodeArgumentCaptor.getValue();
+        assertEquals(1, capturedUserValidationCode.getUserId());
+        assertEquals(6, capturedUserValidationCode.getValidationCode().length());
+
+        verify(this.emailService).sendEmail(eq("email@gmail.com"), eq("Registration Validation"), any(String.class));
     }
 
     @Test
@@ -126,8 +133,6 @@ public class UserServiceTest {
         verify(this.userDAO).insert(any(User.class));
         verify(this.userValidationCodeDAO).insert(any(UserValidationCode.class));
     }
-
-    // TODO: encounterExceptionWhenSendValidationEmail
 
     @Test
     public void testActivate_withEmailAsIdentification_happyCase() throws Exception {
