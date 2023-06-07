@@ -3,10 +3,16 @@ package com.yuxin.messaging.model;
 import java.util.Date;
 
 import com.yuxin.messaging.enums.Gender;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 // model / data transfer object / DTO
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 // Map.of("username", "11111", "nickname", "11111", "register_time", "xxxxxxxx")
 public class User {
     private int id;
