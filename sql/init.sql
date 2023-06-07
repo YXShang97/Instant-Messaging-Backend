@@ -1,3 +1,4 @@
+CREATE DATABASE messaging;
 USE messaging;
 CREATE TABLE user (
                         `id` int NOT NULL AUTO_INCREMENT,
@@ -24,6 +25,7 @@ CREATE TABLE user_validation_code (
                           FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
+CREATE DATABASE messaging_test;
 USE messaging_test;
 CREATE TABLE user (
                       `id` int NOT NULL AUTO_INCREMENT,
