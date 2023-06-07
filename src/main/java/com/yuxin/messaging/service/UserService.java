@@ -90,7 +90,7 @@ public class UserService {
 
 
         // send validation code to user via email
-        emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
+        // emailService.sendEmail(user.getEmail(), "Registration Validation", String.format("Validation code is: %s", validationCode));
     }
 
     public void activate(String identification, String validationCode) throws MessagingServiceException {
