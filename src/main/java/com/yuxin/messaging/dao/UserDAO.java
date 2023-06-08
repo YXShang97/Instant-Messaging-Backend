@@ -1,5 +1,6 @@
 package com.yuxin.messaging.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.yuxin.messaging.model.User;
@@ -28,6 +29,19 @@ public interface UserDAO {
 
     @Delete("DELETE FROM user")
     void deleteAll();
+
+    // TODO: why @Param is needed?
+    @Update("UPDATE user SET login_token = #{loginToken}, last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP} WHERE id = #{userId}")
+    void login(@Param("loginToken") String loginToken, @Param("lastLoginTime") Date lastLoginTime, @Param("userId") int userId);
+
+    @Select("SELECT * FROM user WHERE login_token = #{loginToken}")
+    User selectUserByLoginToken(String loginToken);
+
+    @Update("UPDATE user SET login_token = #{loginToken}, last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP} WHERE id = #{userId}")
+    void logout(@Param("loginToken") String loginToken, @Param("lastLoginTime") Date lastLoginTime, @Param("userId") int userId);
+
+    @Update("UPDATE user SET password = #{password} WHERE id = #{userId}")
+    void updatePassword(int userId, String password);
 }
 //
 //public class UserDAOImpl implements UserDAO {

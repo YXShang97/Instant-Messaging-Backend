@@ -227,13 +227,13 @@ public class UserServiceTest {
     @Test
     public void testMd5_happyCase() throws Exception {
         String input = "password";
-        var md5String = UserService.md5(input);
-        assertEquals("5f4dcc3b5aa765d61d8327deb882cf99", md5String);
+        var md5String = UserService.saltedMD5(input);
+        assertEquals("499a5f270313b56b5a3e59b28edc27a0", md5String);
     }
 
     @Test // testTarget_scenario_expectation()
     public void testMd5_nullInput_returnsNull() throws Exception {
         String input = null;
-        assertNull(UserService.md5(input));
+        assertNull(UserService.saltedMD5(input));
     }
 }
