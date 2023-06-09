@@ -66,7 +66,7 @@ public class UserService {
         user.setEmail(email);
         user.setAddress(address);
         user.setGender(gender);
-        user.setValid(false);
+        user.setIsValid(false);
         user.setRegisterTime(new Date());
 
         // secure password with MD5 hashing and salting
@@ -108,9 +108,9 @@ public class UserService {
         }
 
         // TODO: check whether user is valid
-//        if (!selectedUser.isValid()) {
-//            throw new MessagingServiceException(Status.INVALID_USER);
-//        }
+        if (!selectedUser.getIsValid()) {
+            throw new MessagingServiceException(Status.INVALID_USER);
+        }
 
         String loginToken = RandomStringUtils.randomAlphanumeric(128);
         this.userDAO.login(loginToken, new Date(), selectedUser.getId());

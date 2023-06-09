@@ -14,7 +14,7 @@ public interface UserDAO {
     // user.getUsername();
 
     @Insert("INSERT INTO user (username, nickname, password, register_time, gender, email, address, is_valid) " +
-            "VALUES (#{username}, #{nickname}, #{password}, #{registerTime}, #{gender}, #{email}, #{address}, #{valid})")
+            "VALUES (#{username}, #{nickname}, #{password}, #{registerTime}, #{gender}, #{email}, #{address}, #{isValid})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     void insert(User user);
 
