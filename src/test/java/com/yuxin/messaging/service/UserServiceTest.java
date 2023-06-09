@@ -62,7 +62,7 @@ public class UserServiceTest {
         verify(this.userDAO).insert(userArgumentCaptor.capture());
         var capturedUser = userArgumentCaptor.getValue();
         assertEquals("username", capturedUser.getUsername());
-        assertFalse(capturedUser.isValid());
+        assertFalse(capturedUser.getIsValid());
 
         verify(this.userValidationCodeDAO).insert(userValidationCodeArgumentCaptor.capture());
         var capturedUserValidationCode = userValidationCodeArgumentCaptor.getValue();
