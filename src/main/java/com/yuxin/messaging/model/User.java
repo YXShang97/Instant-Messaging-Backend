@@ -23,7 +23,7 @@ public class User {
     private String address;
     private Gender gender;
     private Date registerTime;
-    private boolean valid;
+    private Boolean isValid;
     private String loginToken;
     private Date lastLoginTime;
 }
