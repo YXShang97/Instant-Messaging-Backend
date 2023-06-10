@@ -53,6 +53,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- aop -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
 		<!-- send email -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

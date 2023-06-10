@@ -30,6 +30,7 @@ public class UserService {
 
     private static final Duration TOKEN_EXPIRY = Duration.ofDays(14);
 
+    // QPS, Error, Latency
     public void register(String username,
                          String nickname,
                          String email,
