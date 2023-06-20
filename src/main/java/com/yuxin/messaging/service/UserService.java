@@ -188,7 +188,6 @@ public class UserService {
 
     public User authenticate(String loginToken) throws MessagingServiceException {
         var selectedUser = this.userDAO.selectUserByLoginToken(loginToken);
-
         if (selectedUser == null) {
             throw new MessagingServiceException(Status.EXPIRED_LOGIN_TOKEN);
         }
@@ -221,5 +220,13 @@ public class UserService {
         }
 
         return selectedUsers.get(0);
+    }
+
+    public User selectById(int userId) throws MessagingServiceException {
+        User user = this.userDAO.selectById(userId);
+        if (user == null) {
+            throw new MessagingServiceException(Status.USER_NOT_EXISTS);
+        }
+        return user;
     }
 }
