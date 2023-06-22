@@ -42,6 +42,9 @@ public interface UserDAO {
 
     @Update("UPDATE user SET password = #{password} WHERE id = #{userId}")
     void updatePassword(int userId, String password);
+
+    @Select("SELECT * FROM user WHERE id = #{userId}")
+    User selectById(int userId);
 }
 //
 //public class UserDAOImpl implements UserDAO {

@@ -13,6 +13,18 @@ public enum Status {
     USERNAME_AND_PASSWORD_NOT_MATCH(1007, "Username and password are not matched.", HttpStatus.FORBIDDEN),
     INVALID_USER(1008, "User hasn't been activated.", HttpStatus.FORBIDDEN),
     EXPIRED_LOGIN_TOKEN (1009, "Login token has expired.", HttpStatus.FORBIDDEN),
+    RECEIVER_NOT_EXISTS(1010, "Receiver doesn't exist.", HttpStatus.BAD_REQUEST),
+    ALREADY_FRIENDS(1011, "Already friends.", HttpStatus.BAD_REQUEST),
+    INVITATION_TOO_FREQUENT(1012, "Invitation too frequently.", HttpStatus.BAD_REQUEST),
+    INVITATION_IS_PENDING(1013, "Invitation is pending.", HttpStatus.BAD_REQUEST),
+    INVITATION_NOT_EXISTS(1014, "Invitation doesn't exist.", HttpStatus.BAD_REQUEST),
+    INVITATION_NOT_FOR_YOU(1015, "Invitation is not for you.", HttpStatus.BAD_REQUEST),
+    INVITATION_NOT_PENDING(1016, "Invitation is not pending.", HttpStatus.BAD_REQUEST),
+    GROUP_CHAT_NOT_EXISTS(1017, "Group chat doesn't exist.", HttpStatus.BAD_REQUEST),
+    USER_NOT_IN_GROUP_CHAT(1018, "User isn't in the group chat.", HttpStatus.BAD_REQUEST),
+    GUEST_ALREADY_IN_GROUP_CHAT(1019, "Guest is already in the group chat.", HttpStatus.BAD_REQUEST),
+    GUEST_NOT_YOUR_FRIEND(1020, "Guest is not your friend.", HttpStatus.BAD_REQUEST),
+    USER_NOT_CREATOR(1021, "User is not the creator of the group chat.", HttpStatus.BAD_REQUEST),
     UNKNOWN_EXCEPTION(9999, "Unknown exception.", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private int code;
