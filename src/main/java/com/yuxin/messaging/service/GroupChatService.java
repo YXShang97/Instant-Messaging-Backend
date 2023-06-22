@@ -30,8 +30,7 @@ public class GroupChatService {
                                         .createTime(new Date())
                                         .build();
         this.groupChatDAO.createGroupChat(groupChat);
-        int groupChatId = this.groupChatDAO.getLastInsertedId();
-        this.groupChatMemberDAO.addMember(groupChatId, user.getId());
+        this.groupChatMemberDAO.addMember(groupChat.getId(), user.getId());
     }
 
     public void addMember(User user, int groupChatId, int guestId) throws MessagingServiceException {

@@ -14,9 +14,6 @@ public interface GroupChatDAO {
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     void createGroupChat(GroupChat groupChat);
 
-    @Select("SELECT LAST_INSERT_ID()")
-    int getLastInsertedId();
-
     @Select("SELECT * FROM group_chat WHERE id = #{groupChatId}")
     GroupChat selectGroupChatById(int groupChatId);
 
